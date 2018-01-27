@@ -1,6 +1,7 @@
 "use strict";
 (function (exports) {
     // models of Tetris game
+    var score = 0;
 
     // shape of block
     var Shape = function Shape(name, color, form) {
@@ -66,6 +67,7 @@
             }
         }
         return true;
+        console.log("ok")
     };
     Block.prototype.overflow = function () {
         var form = this.shape.rotated(this.angle);
@@ -134,7 +136,7 @@
                     return r && s !== null;}, true)) {
                 this.stones.splice(y, 1);
                 shrinked++;
-                console.log("shrink1")
+                score+=100;
 
             }
         }
@@ -144,9 +146,9 @@
                 line.push(null);
             }
             this.stones.unshift(line);
-            console.log("shrink2")
 
         }
+        score+=10;
     };
     Stage.prototype.reset = function () {
         for (var y = 0; y < this.stones.length; y++) {
@@ -154,6 +156,7 @@
                 this.stones[y][x] = null;
             }
         }
+        console.log("reset")
     };
     Stage.prototype.eachStone = function (callback) {
         for (var y = 0; y < this.stones.length; y++) {
