@@ -1,3 +1,7 @@
 div {
   text-align: center;
 }
+
+audio {
+  display: none;
+}
