@@ -1,10 +1,10 @@
 class Tree:
 
 	def __init__(self, r):
-
 		self.root = r
 
 
+from Tetris_Board import Board
 
 class Node:
 
@@ -18,20 +18,19 @@ class Node:
 
 
 	def generate_children(self, boards):
-		for i in boards:
-			#generate children
-			pass
+		
+		for board in boards:
+			
+			value = board.heuristic()
+			newChild = Node([] , value, board)
+			self.children.append(newChild)
+
+		print("Generated "+len(boards)+" children.")
 
 	def set_value(self, v):
 		self.value = v
 
 	def set_board(self, b):
-
 		self.board = b
 
 
-#testing
-
-root = Node([], 1)
-
-tree = Tree(root)
