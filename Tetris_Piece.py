@@ -1,19 +1,27 @@
+import numpy as np
+
 class Piece:
 
     def __init__(self, shape):
         shapes = {0: straight_piece,
-                  1: RL_piece,
-                  2: L_piece,
+                  1: L_piece,
+                  2: RL_piece,
                   3: square_piece,
                   4: squigly_piece,
                   5: rev_squigly_piece,
                   6: T_piece}
 
-        self.shape = shapes[shape]()
+        # self.shape = np.empty((0))
+        #
+        # for shape in shapes[shape]():
+        #     self.shape = np.append(self.shape, shape)
+
+        self.shapes = shapes[shape]()
 
 
-    def get_shape(self):
-        print(self.shape)
+    def get_shapes(self):
+        print(self.shapes)
+        return self.shapes
 
 
 def straight_piece():
@@ -25,6 +33,10 @@ def straight_piece():
          [1],
          [1]]
     ]
+
+    # npa = np.empty((0))
+    #
+    # npa = np.append(npa, sh)
 
     return shapes
 
@@ -113,3 +125,8 @@ def T_piece():
     ]
 
     return shapes
+
+
+# y = Piece(2)
+#
+# print(y.get_shapes()[0])
