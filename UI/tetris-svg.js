@@ -74,11 +74,15 @@ window.addEventListener("load", function (ev) {
         }
     };
 
+    var timer = function() {
+        tryFall();
+    };
+
     // init
     var view = document.getElementById(opt.svgid);
     view.setAttribute("width", opt.scale * opt.width);
     view.setAttribute("height", opt.scale * opt.height);
-    view.style.backgroundColor = "grey";;
+    view.style.backgroundColor = "grey";
 
     var stage = Tetris.Stage(opt.width, opt.height);
     var block = newBlock();
@@ -97,4 +101,8 @@ window.addEventListener("load", function (ev) {
     document.body.addEventListener("keydown", keyHandler, false);
     //window.addEventListener("keydown", keyHandler, false);
     render();
+
+    setInterval(timer, 1000);
+
+    timer();
 }, false);
