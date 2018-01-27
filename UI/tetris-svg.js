@@ -23,6 +23,8 @@ window.addEventListener("load", function (ev) {
         block.eachStone(function (x, y, color) {
             view.appendChild(stone(x, y, color));
         });
+        var score = Tetris.getScore();
+        document.getElementById("score").innerHTML = score;
     };
 
     var stone = function (x, y, color) {

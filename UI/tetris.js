@@ -2,6 +2,7 @@
 (function (exports) {
     // models of Tetris game
     var score = 0;
+    var timer = 1000;
 
     // shape of block
     var Shape = function Shape(name, color, form) {
@@ -149,6 +150,8 @@
 
         }
         score+=10;
+        timer = 1000;
+
     };
     Stage.prototype.reset = function () {
         for (var y = 0; y < this.stones.length; y++) {
@@ -156,6 +159,7 @@
                 this.stones[y][x] = null;
             }
         }
+        score=0;
         console.log("reset")
     };
     Stage.prototype.eachStone = function (callback) {
@@ -167,6 +171,11 @@
             }
         }
     };
+
+    var getScore = function(){
+      console.log(score);
+      return score;
+    }
 
     // standard shapes
     var shapes = [
@@ -205,5 +214,6 @@
         Shape: Shape,
         Block: Block,
         Stage: Stage,
+        getScore: getScore,
     };
 })(typeof module === "undefined" ? this : module.exports);
