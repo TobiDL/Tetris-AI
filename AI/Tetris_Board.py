@@ -1,5 +1,5 @@
 import numpy as np
-from Tetris_Piece import Piece
+from Tetris_Piece import PieceSet, Piece
 
 class Board:
 
@@ -14,27 +14,17 @@ class Board:
 			self.board_state = state
 
 
-	def possible_moves(self, pieces):
-		for piece in pieces.get_shapes():
-			p_h, p_w = self.get_piece_info(piece)
-			print(self.width + 1 - p_w)
-			for i in range(0, self.width - p_w):
-				pass
+	def possible_moves(self, piece):
+
+		board_states = []
+
+		for p in piece.get_shapes():
+			for i in range(self.width - p.width):
+				board_state
 
 
-	def make_piece_fall(self):
+	def spawn_piece(self, x, piece):
 		pass
-
-	def is_piece_fallen(self):
-		pass
-
-	def is_piece_all_in(self):
-		pass
-
-	def get_piece_info(self, piece):
-		height = len(piece)
-		width = len(piece[0])
-		return height, width
 
 	def get_avg_height(self):
 		h = [0,0,0,0,0,0,0,0,0,0]
