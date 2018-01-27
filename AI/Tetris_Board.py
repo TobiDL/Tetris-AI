@@ -21,8 +21,17 @@ class Board:
 				h[y] = 20-x
 		return sum(h) / len(h)
 
+	def get_nb_holes(self):
+		holes = 0
+
+		for (x,y), value in np.ndenumerate(self.board_state):
+			if 1 <= y <= 8 and x > 0:
+				if self.board_state.item((x,y-1)) == 1 and self.board_state.item((x,y+1)) == 1 and self.board_state.item((x-1,y)) == 1 and value == 0:
+					holes += 1
+		return holes
+
 	def heuristic(self):
-		pass
+		return (-2 * get_nb_holes) + (-1 * get_avg_height)
 
 
 	def update(self):
@@ -36,7 +45,8 @@ class Board:
 				ctr += 1
 
 		#add the lines back on top
-		temp = np.concatenate(([[0,0,0,0,0,0,0,0,0,0]]*ctr, temp), axis = 0)
+		if ctr > 0:
+			temp = np.concatenate(([[0,0,0,0,0,0,0,0,0,0]]*ctr, temp), axis = 0)
 
 		self.board_state = temp
 
