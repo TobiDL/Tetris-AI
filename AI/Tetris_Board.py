@@ -25,10 +25,20 @@ class Board:
 		pass
 
 
-	def update_board(self):
+	def update(self):
+		temp = self.board_state
+		ctr = 0
+
+		#remove each row that has no 0's
 		for i, row in enumerate(self.board_state):
 			if 0 not in row:
-				np.delete()
+				temp = np.delete(temp, i-ctr, 0)
+				ctr += 1
+
+		#add the lines back on top
+		temp = np.concatenate(([[0,0,0,0,0,0,0,0,0,0]]*ctr, temp), axis = 0)
+
+		self.board_state = temp
 
 	def print_board(self):
 		print(self.board_state)
