@@ -1,8 +1,8 @@
 #testing
 import numpy as np
-from tree import Tree, Node
-from Tetris_Board import Board
-from Tetris_Piece import Piece
+from AI.tree import Tree, Node
+from AI.Tetris_Board import Board
+from AI.Tetris_Piece import Piece
 
 
 b = np.matrix([

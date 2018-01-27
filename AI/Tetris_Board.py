@@ -1,5 +1,5 @@
 import numpy as np
-from Tetris_Piece import Piece
+from AI.Tetris_Piece import Piece
 
 class Board:
 

@@ -4,7 +4,7 @@ class Tree:
 		self.root = r
 
 
-from Tetris_Board import Board
+from AI.Tetris_Board import Board
 
 class Node:
 
