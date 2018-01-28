@@ -108,24 +108,27 @@
     // game stage
     var Stage = function Stage(width, height) {
         var stones = [];
+        var matrix = [];
         for (var y = 0; y < height; y++) {
             var line = [];
             for (var x = 0; x < width; x++) {
-                line.push(null);
+                line.push(0);
             }
             stones.push(line);
+            matrix.push(line);
         }
         return Object.create(Stage.prototype, {
             stones: {value: stones, enumerable: true},
             width: {value: width, enumerable: true},
             height: {value: height, enumerable: true},
+            matrix: {value: matrix, enumerable: true},
         });
     };
     Stage.prototype.filledLines = function () {
         var lines = [];
         for (var y = 0; y < this.stones.length; y++) {
             if (this.stones[y].reduce(function (r, s) {
-                    return r && s !== null;}, true)) lines.push(y);
+                    return r && s !== 0;}, true)) lines.push(y);
             console.log("filledlines")
         }
         return lines;
@@ -134,7 +137,7 @@
         var shrinked = 0;
         for (var y = this.stones.length - 1; y >= 0; y--) {
             if (this.stones[y].reduce(function (r, s) {
-                    return r && s !== null;}, true)) {
+                    return r && s !== 0;}, true)) {
                 this.stones.splice(y, 1);
                 shrinked++;
                 score+=100;
@@ -144,7 +147,7 @@
         for (var i = 0; i < shrinked; i++) {
             var line = [];
             for (var x = 0; x < this.width; x++) {
-                line.push(null);
+                line.push(0);
             }
             this.stones.unshift(line);
 
@@ -170,50 +173,88 @@
                 if (color) callback(x, y, color);
             }
         }
+
     };
 
-    var getScore = function(){
-      console.log(score);
-      return score;
+    Stage.prototype.newMatrix = function (callback) {
+      var myarray = new Array(20);
+      for (var i=0; i < 20; i +=1) {
+          myarray[i]=new Array(10)
+      }
+      for (var i = 0; i < 20; i++) {
+        for (var j = 0; j < 10; j++) {
+          if(this.stones[i][j] == 0){
+            myarray[i][j] = 0
+          } else {
+            myarray[i][j] = 1
+          }
+        }
+      }
+      console.log(myarray);
+      return myarray;
     }
 
-    // standard shapes
-    var shapes = [
-        Shape("I", "red",
-            [[0, 1, 0, 0],
-                [0, 1, 0, 0],
-                [0, 1, 0, 0],
-                [0, 1, 0, 0]]),
-        Shape("J", "magenta",
-            [[0, 1, 0],
-                [0, 1, 0],
-                [1, 1, 0]]),
-        Shape("L", "yellow",
-            [[0, 1, 0],
-                [0, 1, 0],
-                [0, 1, 1]]),
-        Shape("T", "lightgrey",
-            [[1, 1, 1],
-                [0, 1, 0],
-                [0, 0, 0]]),
-        Shape("S", "blue",
-            [[0, 1, 1],
-                [1, 1, 0],
-                [0, 0, 0]]),
-        Shape("Z", "green",
-            [[1, 1, 0],
-                [0, 1, 1],
-                [0, 0, 0]]),
-        Shape("O", "cyan",
-            [[1, 1],
-                [1, 1]]),
-    ];
+    var Matrix = function ()  {
+      var myarray = new Array(20);
+      for (var i=0; i < 20; i +=1) {
+          myarray[i]=new Array(10)
+      }
+      for (var i = 0; i < 20; i++) {
+        for (var j = 0; j < 10; j++) {
+          if(stage.stones[i][j] != null){
+            myarray[i][j] = 1
+          } else {
+            myarray[i][j] = 0
+          }
+        }
+      }
+      console.log(myarray);
+      return myarray;
+  }
 
-    exports.Tetris = {
-        shapes: shapes,
-        Shape: Shape,
-        Block: Block,
-        Stage: Stage,
-        getScore: getScore,
-    };
-})(typeof module === "undefined" ? this : module.exports);
+      var getScore = function(){
+        console.log(score);
+        return score;
+      }
+
+      // standard shapes
+      var shapes = [
+          Shape("I", "red",
+              [[0, 1, 0, 0],
+                  [0, 1, 0, 0],
+                  [0, 1, 0, 0],
+                  [0, 1, 0, 0]]),
+          Shape("L", "yellow",
+              [[0, 1, 0],
+                  [0, 1, 0],
+                  [0, 1, 1]]),
+          Shape("J", "magenta",
+              [[0, 1, 0],
+                  [0, 1, 0],
+                  [1, 1, 0]]),
+          Shape("O", "cyan",
+              [[1, 1],
+                  [1, 1]]),
+          Shape("S", "blue",
+              [[0, 1, 1],
+                  [1, 1, 0],
+                  [0, 0, 0]]),
+          Shape("Z", "green",
+              [[1, 1, 0],
+                  [0, 1, 1],
+                  [0, 0, 0]]),
+          Shape("T", "lightgrey",
+              [[1, 1, 1],
+                  [0, 1, 0],
+                  [0, 0, 0]]),
+
+      ];
+
+      exports.Tetris = {
+          shapes: shapes,
+          Shape: Shape,
+          Block: Block,
+          Stage: Stage,
+          getScore: getScore,
+      };
+  })(typeof module === "undefined" ? this : module.exports);

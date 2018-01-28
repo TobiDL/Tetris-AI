@@ -10,10 +10,32 @@ window.addEventListener("load", function (ev) {
     };
 
     var newBlock = function () {
+
+        var matrix = stage.newMatrix();
+        var num = Math.floor((Math.random() * 7));
+
+        var json = {matrix: matrix, piece: num};
+
+        loadDoc(json);
+
         return Tetris.Block(
             0|(opt.width / 2) - 2, 0, 0,
-            Tetris.shapes[0|(Math.random() * Tetris.shapes.length)]);
+            Tetris.shapes[0|num]);
+
+
     };
+
+    function loadDoc(j) {
+      var xhttp = new XMLHttpRequest();
+      xhttp.open("POST", "localhost:8080/tetris-ai", true);
+      xhttp.setRequestHeader("Content-type", "application/json");
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var json = JSON.parse(xhttp.responseText);
+        }
+      };
+      xhttp.send(JSON.stringify(j));
+    }
 
     var render = function () {
         while (view.hasChildNodes()) view.removeChild(view.lastChild);
@@ -88,6 +110,7 @@ window.addEventListener("load", function (ev) {
 
     var stage = Tetris.Stage(opt.width, opt.height);
     var block = newBlock();
+    console.log(block);
     // not work keypress event on chrome svg
     var keyHandler = function (ev) {
         //console.log(ev.target);
