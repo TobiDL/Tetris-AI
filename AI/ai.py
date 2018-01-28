@@ -2,7 +2,7 @@
 import numpy as np
 from tree import Tree, Node
 from Tetris_Board import Board
-from Tetris_Piece import Piece
+from Tetris_Piece import PieceSet, Piece
 
 
 b = np.matrix([
@@ -34,14 +34,10 @@ board = Board(b)
 root = Node([], 1, board)
 tree = Tree(root)
 
-board.update()
 
 board.print_board()
 
-print(board.get_avg_height())
-
-print(board.get_nb_holes())
-
-#y = Piece(tetris_shape[1])
-#x.possible_moves(y)
+square = PieceSet(1)
+print("---------------------------------------------------------")
+board.possible_moves(square)
 

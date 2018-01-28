@@ -1,5 +1,6 @@
 import numpy as np
 from Tetris_Piece import PieceSet, Piece
+import copy
 
 class Board:
 
@@ -13,25 +14,48 @@ class Board:
 		else:
 			self.board_state = state
 
+		self.highest_pos = self.get_highest_pos()
 
-	def possible_moves(self, piece):
+
+
+	def possible_moves(self, piece_set):
 
 		board_states = []
 
-		for p in piece.get_shapes():
-			for i in range(self.width - p.width):
-				board_state
+		for piece in piece_set.get_shapes():
+			for i in range(self.width - piece.width + 1):
+				board_states.append(self.spawn_piece(i, piece))
+
+		return board_states
 
 
 	def spawn_piece(self, x, piece):
-		pass
+		
+		temp = copy.deepcopy(self.board_state)
 
-	def get_avg_height(self):
+		#first we get the max height
+		m = 19 - max(self.highest_pos[x:x+piece.width])
+
+		if False: #better check goes here
+			pass
+		else:
+			for i in range(piece.width):
+				for k in range(piece.height):
+					temp[m-k, x+i] = piece.matrix[piece.height-1-k][i]
+
+		temp = self.update(temp)
+		print(temp)
+		return temp
+
+	def get_highest_pos(self):
 		h = [0,0,0,0,0,0,0,0,0,0]
 		for (x,y), value in np.ndenumerate(self.board_state):
 			if value == 1 and h[y] == 0:
 				h[y] = 20-x
-		return sum(h) / len(h)
+		return h
+
+	def get_avg_height(self):
+		return sum(self.highest_pos) / len(highest_pos)
 
 	def get_nb_holes(self):
 		holes = 0
@@ -46,8 +70,8 @@ class Board:
 		return (-2 * get_nb_holes) + (-1 * get_avg_height)
 
 
-	def update(self):
-		temp = self.board_state
+	def update(self, t):
+		temp = t
 		ctr = 0
 
 		#remove each row that has no 0's
@@ -60,7 +84,7 @@ class Board:
 		if ctr > 0:
 			temp = np.concatenate(([[0,0,0,0,0,0,0,0,0,0]]*ctr, temp), axis = 0)
 
-		self.board_state = temp
+		return temp
 
 	def print_board(self):
 		print(self.board_state)
@@ -69,10 +93,3 @@ class Board:
 		self.board_state = new_board
 
 
-y = Piece(1)
-
-x = Board()
-
-#y.get_shapes()
-
-x.possible_moves(y)
