@@ -5,3 +5,12 @@ div {
 audio {
   display: none;
 }
+
+body {
+  background-color: black;
+  color: red;
+}
+
+h1 {
+  color: red;
+}

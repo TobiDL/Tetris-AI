@@ -106,7 +106,7 @@ window.addEventListener("load", function (ev) {
     var view = document.getElementById(opt.svgid);
     view.setAttribute("width", opt.scale * opt.width);
     view.setAttribute("height", opt.scale * opt.height);
-    view.style.backgroundColor = "grey";
+    view.style.backgroundColor = "white";
 
     var stage = Tetris.Stage(opt.width, opt.height);
     var block = newBlock();
