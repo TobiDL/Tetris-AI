@@ -1,6 +1,6 @@
 import numpy as np
 from Tetris_Piece import PieceSet, Piece
-import copy, math
+import copy, math, time
 
 class Board:
 
@@ -21,12 +21,16 @@ class Board:
 
 	def best_move(self, piece_set):
 
+		starttime = time.time()
+
 		possible_moves = self.possible_moves(piece_set)
 
 		score = []
 
 		for board in possible_moves:
 			score.append(board.heuristic())
+
+		print(time.time() - starttime)
 
 		return possible_moves[score.index(max(score))].moves
 
@@ -43,10 +47,10 @@ class Board:
 
 
 	def spawn_piece(self, x, piece):
-		
+
 		child = Board(copy.deepcopy(self.board_state))
 		board = child.board_state
-	
+
 		#first we get the max height
 		m = 19 - max(self.highest_pos[x:x+piece.width])
 
@@ -55,11 +59,43 @@ class Board:
 		else:
 			for i in range(piece.width):
 				for k in range(piece.height):
-					board[m-k, x+i] = piece.matrix[piece.height-1-k][i]
+					board[m-k, x+i] = 2 * piece.matrix[piece.height-1-k][i]
+
+		offset = 0
+		while not self.valid_board(board, piece, m + offset, x):
+			offset += 1
+			child = Board(copy.deepcopy(self.board_state))
+			board = child.board_state
+
+			for i in range(piece.width):
+				for k in range(piece.height):
+					board[m - k + offset, x + i] += 2 * piece.matrix[piece.height - 1 - k][i]
+
+		board = self.remove_2(board, piece, m + offset, x)
+
+		print(board)
 
 		board = self.update(child)
 		child.moves = x + math.floor(piece.width/2) - 5
 		return child
+
+
+	def valid_board(self, board, piece, y, x):
+		for i in range(piece.width):
+			for k in range(piece.height):
+				if board[y - k, x + i] == 2 and board[y - k + 1, x + i] == 1:
+					return True
+		return False
+
+	def remove_2(self, board, piece, y, x):
+		count = 0
+		for i in range(piece.width):
+			for k in range(piece.height):
+				if board[y - k, x + i] == 2:
+					board[y - k, x + i] = 1
+					count += 1
+					if count == 4:
+						return board
 
 	def get_highest_pos(self):
 		h = [0,0,0,0,0,0,0,0,0,0]
