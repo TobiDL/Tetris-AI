@@ -5,7 +5,12 @@ from Tetris_Board import Board
 from Tetris_Piece import PieceSet, Piece
 
 from flask import Flask
+from flask_cors import CORS, cross_origin
+
+import requests, json
+
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/test', methods=['GET'])
