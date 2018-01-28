@@ -2,46 +2,71 @@
 import numpy as np
 from tree import Tree, Node
 from Tetris_Board import Board
-from Tetris_Piece import Piece
+from Tetris_Piece import PieceSet, Piece
+
+from flask import Flask
+app = Flask(__name__)
 
 
-b = np.matrix([
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,0,0,0,0,0,0,0,0],
-[0,0,1,0,0,0,0,0,0,0],
-[1,1,1,1,0,1,1,1,1,1],
-[1,1,1,1,1,1,0,1,1,1]
-])
+@app.route('/test', methods=['GET'])
+def test():
+	b = np.matrix([
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,0,0,0,0,0,0,0,0],
+	[0,0,1,0,0,0,0,0,0,0],
+	[1,1,1,1,0,1,1,1,1,1],
+	[1,1,1,1,1,1,0,1,1,1]
+	])
 
 
-#initialisation
-board = Board(b)
-root = Node([], 1, board)
-tree = Tree(root)
+	#initialisation
+	board = Board(b)
+	root = Node([], 1, board)
+	tree = Tree(root)
 
-board.update()
 
-board.print_board()
+	board.print_board()
 
-print(board.get_avg_height())
+	square = PieceSet(1)
 
-print(board.get_nb_holes())
+	move = board.best_move(square)
+	return str(move)
 
-#y = Piece(tetris_shape[1])
-#x.possible_moves(y)
+
+@app.route('/tetris-ai', methods=['POST'])
+def calculate_best_move():
+
+	req = request.get_json(force=True)
+	board_status = req["board"]
+	piece_num = req["piece"]
+
+	board = Board(board_status)
+	piece = PieceSet(piece_num)
+
+	print(board.best_move(piece))
+
+	return 'Something'
+
+
+if __name__ == '__main__':
+	app.run(host = '0.0.0.0', port = 8080 ,debug = True)
+
+
+
+
 

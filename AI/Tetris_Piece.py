@@ -1,132 +1,142 @@
 import numpy as np
 
-class Piece:
+class PieceSet:
 
-    def __init__(self, shape):
-        shapes = {0: straight_piece,
-                  1: L_piece,
-                  2: RL_piece,
-                  3: square_piece,
-                  4: squigly_piece,
-                  5: rev_squigly_piece,
-                  6: T_piece}
+    def __init__(self, piece_num):
+        pieces = {
+            0: self.straight_piece,
+            1: self.L_piece,
+            2: self.RL_piece,
+            3: self.square_piece,
+            4: self.squigly_piece,
+            5: self.rev_squigly_piece,
+            6: self.T_piece
+        }
 
-        # self.shape = np.empty((0))
-        #
-        # for shape in shapes[shape]():
-        #     self.shape = np.append(self.shape, shape)
-
-        self.shapes = shapes[shape]()
+        self.diff_orientation = pieces[piece_num]()
 
 
     def get_shapes(self):
-        print(self.shapes)
-        return self.shapes
+        #print(self.shapes)
+        return self.diff_orientation
 
 
-def straight_piece():
-    shapes = [
-        [[1, 1, 1, 1]],
+    def straight_piece(self):
+        s1 = Piece(
+            [[1, 1, 1, 1]], 4, 1)
 
-        [[1],
-         [1],
-         [1],
-         [1]]
-    ]
-
-    # npa = np.empty((0))
-    #
-    # npa = np.append(npa, sh)
-
-    return shapes
-
-def L_piece():
-    shapes = [
-        [[1, 0],
-         [1, 0],
-         [1, 1]],
-
-        [[0, 0, 1],
-         [1, 1, 1]],
-
-        [[1, 1],
-         [0, 1],
-         [0, 1]],
-
-        [[1, 1, 1],
-         [1, 0, 0]]
-    ]
-
-    return shapes
-
-def RL_piece():
-    shapes = [
-        [[0, 1],
-         [0, 1],
-         [1, 1]],
-
-        [[1, 0, 0],
-         [1, 1, 1]],
-
-        [[1, 1],
-         [1, 0],
-         [1, 0]],
-
-        [[1, 1, 1],
-         [0, 0, 1]]
-    ]
-
-    return shapes
-
-def square_piece():
-
-    return [[1, 1],
-	        [1, 1]]
-
-def squigly_piece():
-    shapes = [
-        [[0, 1, 1],
-         [1, 1, 0]],
-
-        [[1, 0],
-         [1, 1],
-         [0, 1]]
-    ]
-
-    return shapes
-
-def rev_squigly_piece():
-    shapes = [
-        [[1, 1, 0],
-         [0, 1, 1]],
-
-        [[0, 1],
-         [1, 1],
-         [1, 0]]
-    ]
-
-    return shapes
-
-def T_piece():
-    shapes = [
-        [[1, 1, 1],
-         [0, 1, 0]],
-
-        [[0, 1, 0],
-         [1, 1, 1]],
-
-        [[0, 1],
-         [1, 1],
-         [0, 1]],
-
-        [[1, 0],
-         [1, 1],
-         [1, 0]]
-    ]
-
-    return shapes
+        s2 = Piece(
+            [[1],
+             [1],
+             [1],
+             [1]], 1, 4)
 
 
-# y = Piece(2)
-#
-# print(y.get_shapes()[0])
+        return [s1, s2]
+
+    def L_piece(self):
+        l1 = Piece(
+            [[1, 0],
+             [1, 0],
+             [1, 1]], 2, 3)
+
+        l2 = Piece(
+            [[0, 0, 1],
+             [1, 1, 1]], 3, 2)
+
+        l3 = Piece(
+            [[1, 1],
+             [0, 1],
+             [0, 1]], 2, 3)
+
+        l4 = Piece(
+            [[1, 1, 1],
+             [1, 0, 0]], 3, 2)
+
+        return [l1,l2, l3, l4]
+
+    def RL_piece(self):
+        rl1 = Piece(
+            [[0, 1],
+             [0, 1],
+             [1, 1]], 2, 3)
+
+        rl2 = Piece(
+            [[1, 0, 0],
+             [1, 1, 1]], 3, 2)
+
+        rl3 = Piece(
+            [[1, 1],
+             [1, 0],
+             [1, 0]], 2, 3)
+
+        rl4 = Piece(
+            [[1, 1, 1],
+             [0, 0, 1]], 3, 2)
+
+        return [rl1, rl2, rl3, rl4]
+
+    def square_piece(self):
+
+        s = Piece(
+            [[1, 1],
+    	     [1, 1]], 2, 2)
+
+        return [s]
+
+    def squigly_piece(self):
+        s1 = Piece(
+            [[0, 1, 1],
+             [1, 1, 0]], 3, 2)
+
+        s2 = Piece(
+            [[1, 0],
+             [1, 1],
+             [0, 1]], 2, 3)
+
+
+        return [s1, s2]
+
+    def rev_squigly_piece(self):
+        rs1 = Piece(
+            [[1, 1, 0],
+             [0, 1, 1]], 3, 2)
+
+        rs2 = Piece(
+            [[0, 1],
+             [1, 1],
+             [1, 0]], 2, 3)
+
+
+        return [rs1, rs2]
+
+    def T_piece(self):
+        t1 = Piece(
+            [[1, 1, 1],
+             [0, 1, 0]] , 3, 2)
+ 
+        t2 = Piece(
+            [[0, 1, 0],
+             [1, 1, 1]] , 3, 2)    
+
+
+        t3 = Piece(
+            [[0, 1],
+             [1, 1],
+             [0, 1]] , 2, 3)
+
+        t4 = Piece(
+            [[1, 0],
+             [1, 1],
+             [1, 0]] , 2, 3)
+
+        return [t1,t2,t3,t4]
+
+class Piece:
+
+    def __init__(self, matrix = [], w = 0, h = 0):
+
+        self.matrix = matrix
+        self.width = w
+        self.height = h
+
