@@ -1,6 +1,6 @@
 import numpy as np
 from Tetris_Piece import PieceSet, Piece
-import copy
+import copy, math
 
 class Board:
 
@@ -9,13 +9,26 @@ class Board:
 		self.height = 20
 		self.width = 10
 
+		self.moves = 0
+
 		if state == []:
 			self.board_state = np.zeros(shape=(20, 10))
 		else:
-			self.board_state = state
+			self.board_state = np.matrix(state)
 
 		self.highest_pos = self.get_highest_pos()
 
+
+	def best_move(self, piece_set):
+
+		possible_moves = self.possible_moves(piece_set)
+
+		score = []
+
+		for board in possible_moves:
+			score.append(board.heuristic())
+
+		return possible_moves[score.index(max(score))].moves
 
 
 	def possible_moves(self, piece_set):
@@ -31,8 +44,9 @@ class Board:
 
 	def spawn_piece(self, x, piece):
 		
-		temp = copy.deepcopy(self.board_state)
-
+		child = Board(copy.deepcopy(self.board_state))
+		board = child.board_state
+	
 		#first we get the max height
 		m = 19 - max(self.highest_pos[x:x+piece.width])
 
@@ -41,11 +55,11 @@ class Board:
 		else:
 			for i in range(piece.width):
 				for k in range(piece.height):
-					temp[m-k, x+i] = piece.matrix[piece.height-1-k][i]
+					board[m-k, x+i] = piece.matrix[piece.height-1-k][i]
 
-		temp = self.update(temp)
-		print(temp)
-		return temp
+		board = self.update(child)
+		child.moves = x + math.floor(piece.width/2) - 5
+		return child
 
 	def get_highest_pos(self):
 		h = [0,0,0,0,0,0,0,0,0,0]
@@ -55,7 +69,7 @@ class Board:
 		return h
 
 	def get_avg_height(self):
-		return sum(self.highest_pos) / len(highest_pos)
+		return sum(self.highest_pos) / len(self.highest_pos)
 
 	def get_nb_holes(self):
 		holes = 0
@@ -67,7 +81,7 @@ class Board:
 		return holes
 
 	def heuristic(self):
-		return (-2 * get_nb_holes) + (-1 * get_avg_height)
+		return (-2 * self.get_nb_holes()) + (-1 * self.get_avg_height())
 
 
 	def update(self, t):
@@ -89,7 +103,7 @@ class Board:
 	def print_board(self):
 		print(self.board_state)
 
-	def update_board(self, new_board):
-		self.board_state = new_board
+	def set_board(self, new_board):
+		self.board_state = copy.deepcopy(new_board)
 
 
