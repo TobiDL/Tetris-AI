@@ -12,7 +12,7 @@ from flask import *
 #import requests, json
 
 app = Flask(__name__)
-CORS(app)
+#CORS(app)
 
 
 @app.route('/')
