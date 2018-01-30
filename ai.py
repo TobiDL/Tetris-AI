@@ -5,9 +5,11 @@ from Tetris_Board import Board
 from Tetris_Piece import PieceSet, Piece
 
 from flask import *
-from flask_cors import CORS, cross_origin
 
-import requests, json
+#imports that might be needed in the future:
+
+#from flask_cors import CORS, cross_origin
+#import requests, json
 
 app = Flask(__name__)
 CORS(app)
