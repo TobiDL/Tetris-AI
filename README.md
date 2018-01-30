@@ -5,6 +5,7 @@ Tetris AI implemented using Flask and Javascript.
 ## How to run:
 
 ### Requirements:
+
 	'''
 	python 3
 	pip
@@ -13,6 +14,7 @@ Tetris AI implemented using Flask and Javascript.
 ### Installing
 	
 Once you cloned the repository, simply run the following commands:
+
 '''
 pip install -r requirements.txt
 '''
@@ -20,6 +22,7 @@ pip install -r requirements.txt
 ### Running the app
 
 Once everything is installed, run the flask app with the following command:
+
 '''
 python ai.py
 '''
