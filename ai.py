@@ -76,9 +76,10 @@ def calculate_best_move():
 
 	piece = PieceSet(piece_num)
 
-	print(board.best_move(piece))
+	moves = board.best_move(piece)
+	print(moves)
 
-	return 'Something'
+	return ''+str(moves)
 
 
 if __name__ == '__main__':

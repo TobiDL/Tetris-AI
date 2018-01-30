@@ -16,29 +16,35 @@ window.addEventListener("load", function (ev) {
 
         var json = {board: matrix, piece: num};
 
-        loadDoc(json);
+        var moves = tetris_ai(json);
+        console.log("in here"+moves)
 
         return Tetris.Block(
             0|(opt.width / 2) - 2, 0, 0,
-            Tetris.shapes[0|num]);
+            Tetris.shapes[0|num], moves);
 
 
     };
 
-    function loadDoc(j) {
+    function tetris_ai(j) {
+        var moves = 0
+
         var post = $.ajax({
             type: 'POST',
             url: "/tetris-ai",
             data: j,
+            async: false,
             dataType: "json",
             success: function(response) {
-                console.log(response);
+                console.log(response)
+                moves = response;
             },
             error: function(error) {
                 console.log("Something bad happened");
                 console.log(error);
             }
         })
+        return moves
     }
 
     var render = function () {
@@ -92,15 +98,30 @@ window.addEventListener("load", function (ev) {
             render();
             setTimeout(function () {
                 stage.shrink();
+
                 block = newBlock();
+                trigger_ai(block.ai);
+                console.log(block);
+
                 if (!block.ok(stage)) {
                     // gameover
-                    stage.reset();
+                    stage.reset()
+                    //document.getElementById("title").innerHTML = "GAME OVER";
+
                 }
                 render();
             }, 10);
         }
     };
+
+    var trigger_ai = function(moves) {
+        console.log(moves)
+        for(var i =0; i < 5; i++)
+            tryLeft();
+    
+        for(var i =0; i < moves; i++)
+            tryRight();
+    }
 
     var timer = function() {
         tryFall();
@@ -114,7 +135,12 @@ window.addEventListener("load", function (ev) {
 
     var stage = Tetris.Stage(opt.width, opt.height);
     var block = newBlock();
-    //console.log(block);
+    trigger_ai(block.ai);
+
+
+
+
+    console.log(block);
     // not work keypress event on chrome svg
     var keyHandler = function (ev) {
         //console.log(ev.target);
@@ -131,7 +157,7 @@ window.addEventListener("load", function (ev) {
     //window.addEventListener("keydown", keyHandler, false);
     render();
 
-    setInterval(timer, 1000);
+    setInterval(timer, 100);
 
     timer();
 }, false);

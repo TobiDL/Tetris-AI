@@ -36,25 +36,26 @@
     };
 
     // moving block
-    var Block = function Block(x, y, angle, shape) {
+    var Block = function Block(x, y, angle, shape, ai) {
         return Object.create(Block.prototype, {
             x: {value: x, enumerable: true},
             y: {value: y, enumerable: true},
             angle: {value: angle, enumerable: true},
             shape: {value: shape, enumerable: true},
+            ai: {value: ai, enumerable: true}
         });
     };
     Block.prototype.left = function () {
-        return Block(this.x - 1, this.y, this.angle, this.shape);
+        return Block(this.x - 1, this.y, this.angle, this.shape, this.ai);
     };
     Block.prototype.right = function () {
-        return Block(this.x + 1, this.y, this.angle, this.shape);
+        return Block(this.x + 1, this.y, this.angle, this.shape, this.ai);
     };
     Block.prototype.fall = function () {
-        return Block(this.x, this.y + 1, this.angle, this.shape);
+        return Block(this.x, this.y + 1, this.angle, this.shape, this.ai);
     };
     Block.prototype.rotate = function () {
-        return Block(this.x, this.y, this.angle + 1, this.shape);
+        return Block(this.x, this.y, this.angle + 1, this.shape, this.ai);
     };
     Block.prototype.ok = function (stage) {
         var form = this.shape.rotated(this.angle);
@@ -164,6 +165,8 @@
         score=0;
         console.log("reset")
     };
+
+    
     Stage.prototype.eachStone = function (callback) {
         for (var y = 0; y < this.stones.length; y++) {
             var line = this.stones[y];
