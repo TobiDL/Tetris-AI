@@ -11,17 +11,14 @@ class Board:
 
 		self.moves = 0
 
-		if state == []:
+		if len(state) == 0:
 			self.board_state = np.zeros(shape=(20, 10))
 		else:
 			self.board_state = np.matrix(state)
 
 		self.highest_pos = self.get_highest_pos()
 
-
 	def best_move(self, piece_set):
-
-		starttime = time.time()
 
 		possible_moves = self.possible_moves(piece_set)
 
@@ -30,7 +27,8 @@ class Board:
 		for board in possible_moves:
 			score.append(board.heuristic())
 
-		print(time.time() - starttime)
+		print(possible_moves[score.index(max(score))].board_state)
+
 
 		return possible_moves[score.index(max(score))].moves
 
@@ -59,8 +57,9 @@ class Board:
 		else:
 			for i in range(piece.width):
 				for k in range(piece.height):
-					board[m-k, x+i] = 2 * piece.matrix[piece.height-1-k][i]
+					board[m-k, x+i] = piece.matrix[piece.height-1-k][i]
 
+		'''
 		offset = 0
 		while not self.valid_board(board, piece, m + offset, x):
 			offset += 1
@@ -72,11 +71,10 @@ class Board:
 					board[m - k + offset, x + i] += 2 * piece.matrix[piece.height - 1 - k][i]
 
 		board = self.remove_2(board, piece, m + offset, x)
+		'''
 
-		print(board)
-
-		board = self.update(child)
-		child.moves = x + math.floor(piece.width/2) - 5
+		child.update()
+		child.moves = x
 		return child
 
 
@@ -120,21 +118,22 @@ class Board:
 		return (-2 * self.get_nb_holes()) + (-1 * self.get_avg_height())
 
 
-	def update(self, t):
-		temp = t
+	def update(self):
+		
 		ctr = 0
 
 		#remove each row that has no 0's
 		for i, row in enumerate(self.board_state):
 			if 0 not in row:
-				temp = np.delete(temp, i-ctr, 0)
+				self.board_state = np.delete(temp, i-ctr, 0)
 				ctr += 1
 
 		#add the lines back on top
 		if ctr > 0:
-			temp = np.concatenate(([[0,0,0,0,0,0,0,0,0,0]]*ctr, temp), axis = 0)
+			self.board_state = np.concatenate(([[0,0,0,0,0,0,0,0,0,0]]*ctr, self.board_state), axis = 0)
 
-		return temp
+		self.highest_pos = self.get_highest_pos()
+
 
 	def print_board(self):
 		print(self.board_state)

@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1" />
+  
+  <script src="{{ url_for('static', filename = 'tetris.js' ) }}"></script>
+  <script src="{{ url_for('static', filename = 'tetris-svg.js' ) }}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> 
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'tetris.css' ) }}" />
+</head>
+
+<body>
+<div>
+  <h1 id='title'>TETRIS</h1>
+    <p> Score is:
+      <p id='score'></p>
+    </p>
+  </div>
+
+
+
+  <div class="main"><svg id="stage"></svg></div>
+    <!--
+
+  <audio controls autoplay loop>
+    <source src="{{ url_for('static', filename = 'Tetris.mp3' ) }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+    -->
+
+</body>
+
+</html>

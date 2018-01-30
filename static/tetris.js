@@ -36,25 +36,26 @@
     };
 
     // moving block
-    var Block = function Block(x, y, angle, shape) {
+    var Block = function Block(x, y, angle, shape, ai) {
         return Object.create(Block.prototype, {
             x: {value: x, enumerable: true},
             y: {value: y, enumerable: true},
             angle: {value: angle, enumerable: true},
             shape: {value: shape, enumerable: true},
+            ai: {value: ai, enumerable: true}
         });
     };
     Block.prototype.left = function () {
-        return Block(this.x - 1, this.y, this.angle, this.shape);
+        return Block(this.x - 1, this.y, this.angle, this.shape, this.ai);
     };
     Block.prototype.right = function () {
-        return Block(this.x + 1, this.y, this.angle, this.shape);
+        return Block(this.x + 1, this.y, this.angle, this.shape, this.ai);
     };
     Block.prototype.fall = function () {
-        return Block(this.x, this.y + 1, this.angle, this.shape);
+        return Block(this.x, this.y + 1, this.angle, this.shape, this.ai);
     };
     Block.prototype.rotate = function () {
-        return Block(this.x, this.y, this.angle + 1, this.shape);
+        return Block(this.x, this.y, this.angle + 1, this.shape, this.ai);
     };
     Block.prototype.ok = function (stage) {
         var form = this.shape.rotated(this.angle);
@@ -68,7 +69,6 @@
             }
         }
         return true;
-        console.log("ok")
     };
     Block.prototype.overflow = function () {
         var form = this.shape.rotated(this.angle);
@@ -165,6 +165,8 @@
         score=0;
         console.log("reset")
     };
+
+    
     Stage.prototype.eachStone = function (callback) {
         for (var y = 0; y < this.stones.length; y++) {
             var line = this.stones[y];
@@ -177,21 +179,18 @@
     };
 
     Stage.prototype.newMatrix = function (callback) {
-      var myarray = new Array(20);
-      for (var i=0; i < 20; i +=1) {
-          myarray[i]=new Array(10)
-      }
+      var board = ""
+ 
       for (var i = 0; i < 20; i++) {
         for (var j = 0; j < 10; j++) {
           if(this.stones[i][j] == 0){
-            myarray[i][j] = 0
+            board += '0'
           } else {
-            myarray[i][j] = 1
+            board += '1'
           }
         }
       }
-      console.log(myarray);
-      return myarray;
+      return board;
     }
 
     var Matrix = function ()  {
@@ -213,7 +212,6 @@
   }
 
       var getScore = function(){
-        console.log(score);
         return score;
       }
 
