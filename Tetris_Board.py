@@ -11,7 +11,7 @@ class Board:
 
 		self.moves = 0
 
-		if state == []:
+		if len(state) == 0:
 			self.board_state = np.zeros(shape=(20, 10))
 		else:
 			self.board_state = np.matrix(state)
@@ -59,8 +59,9 @@ class Board:
 		else:
 			for i in range(piece.width):
 				for k in range(piece.height):
-					board[m-k, x+i] = 2 * piece.matrix[piece.height-1-k][i]
+					board[m-k, x+i] = piece.matrix[piece.height-1-k][i]
 
+		'''
 		offset = 0
 		while not self.valid_board(board, piece, m + offset, x):
 			offset += 1
@@ -72,6 +73,7 @@ class Board:
 					board[m - k + offset, x + i] += 2 * piece.matrix[piece.height - 1 - k][i]
 
 		board = self.remove_2(board, piece, m + offset, x)
+		'''
 
 		print(board)
 

@@ -68,7 +68,6 @@
             }
         }
         return true;
-        console.log("ok")
     };
     Block.prototype.overflow = function () {
         var form = this.shape.rotated(this.angle);
@@ -177,21 +176,18 @@
     };
 
     Stage.prototype.newMatrix = function (callback) {
-      var myarray = new Array(20);
-      for (var i=0; i < 20; i +=1) {
-          myarray[i]=new Array(10)
-      }
+      var board = ""
+ 
       for (var i = 0; i < 20; i++) {
         for (var j = 0; j < 10; j++) {
           if(this.stones[i][j] == 0){
-            myarray[i][j] = 0
+            board += '0'
           } else {
-            myarray[i][j] = 1
+            board += '1'
           }
         }
       }
-      console.log(myarray);
-      return myarray;
+      return board;
     }
 
     var Matrix = function ()  {
@@ -213,7 +209,6 @@
   }
 
       var getScore = function(){
-        console.log(score);
         return score;
       }
 

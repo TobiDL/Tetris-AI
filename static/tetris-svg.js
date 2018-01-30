@@ -14,7 +14,7 @@ window.addEventListener("load", function (ev) {
         var matrix = stage.newMatrix();
         var num = Math.floor((Math.random() * 7));
 
-        var json = {matrix: matrix, piece: num};
+        var json = {board: matrix, piece: num};
 
         loadDoc(json);
 
@@ -26,15 +26,19 @@ window.addEventListener("load", function (ev) {
     };
 
     function loadDoc(j) {
-      var xhttp = new XMLHttpRequest();
-      xhttp.open("POST", "localhost:8080/tetris-ai", true);
-      xhttp.setRequestHeader("Content-type", "application/json");
-      xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          var json = JSON.parse(xhttp.responseText);
-        }
-      };
-      xhttp.send(JSON.stringify(j));
+        var post = $.ajax({
+            type: 'POST',
+            url: "/tetris-ai",
+            data: j,
+            dataType: "json",
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(error) {
+                console.log("Something bad happened");
+                console.log(error);
+            }
+        })
     }
 
     var render = function () {
@@ -110,7 +114,7 @@ window.addEventListener("load", function (ev) {
 
     var stage = Tetris.Stage(opt.width, opt.height);
     var block = newBlock();
-    console.log(block);
+    //console.log(block);
     // not work keypress event on chrome svg
     var keyHandler = function (ev) {
         //console.log(ev.target);
