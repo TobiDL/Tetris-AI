@@ -16,18 +16,20 @@ window.addEventListener("load", function (ev) {
 
         var json = {board: matrix, piece: num};
 
-        var moves = tetris_ai(json);
-        console.log("in here"+moves)
+        var values = tetris_ai(json);
+        var moves = values[0]
+        var rotations = values[1]
 
         return Tetris.Block(
             0|(opt.width / 2) - 2, 0, 0,
-            Tetris.shapes[0|num], moves);
+            Tetris.shapes[0|num], moves, rotations);
 
 
     };
 
     function tetris_ai(j) {
         var moves = 0
+        var rotations = 0
 
         var post = $.ajax({
             type: 'POST',
@@ -37,14 +39,15 @@ window.addEventListener("load", function (ev) {
             dataType: "json",
             success: function(response) {
                 console.log(response)
-                moves = response;
+                moves = response. moves;
+                rotations = response.rotations;
             },
             error: function(error) {
                 console.log("Something bad happened");
                 console.log(error);
             }
         })
-        return moves
+        return [moves, rotations]
     }
 
     var render = function () {
@@ -100,7 +103,7 @@ window.addEventListener("load", function (ev) {
                 stage.shrink();
 
                 block = newBlock();
-                trigger_ai(block.ai);
+                trigger_ai(block.moves, block.rotations);
                 console.log(block);
 
                 if (!block.ok(stage)) {
@@ -114,13 +117,18 @@ window.addEventListener("load", function (ev) {
         }
     };
 
-    var trigger_ai = function(moves) {
+    var trigger_ai = function(moves, rotations) {
         console.log(moves)
+
+        for (var i=0; i< rotations; i++)
+            tryRotate();
+
         for(var i =0; i < 5; i++)
             tryLeft();
     
         for(var i =0; i < moves; i++)
             tryRight();
+
     }
 
     var timer = function() {
@@ -135,9 +143,8 @@ window.addEventListener("load", function (ev) {
 
     var stage = Tetris.Stage(opt.width, opt.height);
     var block = newBlock();
-    trigger_ai(block.ai);
-
-
+    
+    trigger_ai(block.moves, block.rotations);
 
 
     console.log(block);

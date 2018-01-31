@@ -10,6 +10,7 @@ class Board:
 		self.width = 10
 
 		self.moves = 0
+		self.latest_piece = None
 
 		if len(state) == 0:
 			self.board_state = np.zeros(shape=(20, 10))
@@ -30,16 +31,18 @@ class Board:
 		print(possible_moves[score.index(max(score))].board_state)
 
 
-		return possible_moves[score.index(max(score))].moves
+		return possible_moves[score.index(max(score))]
 
 
 	def possible_moves(self, piece_set):
 
 		board_states = []
+		pieces = []
 
 		for piece in piece_set.get_shapes():
 			for i in range(self.width - piece.width + 1):
 				board_states.append(self.spawn_piece(i, piece))
+
 
 		return board_states
 
@@ -48,6 +51,8 @@ class Board:
 
 		child = Board(copy.deepcopy(self.board_state))
 		board = child.board_state
+
+		child.latest_piece = piece
 
 		#first we get the max height
 		m = 19 - max(self.highest_pos[x:x+piece.width])
@@ -125,7 +130,7 @@ class Board:
 		#remove each row that has no 0's
 		for i, row in enumerate(self.board_state):
 			if 0 not in row:
-				self.board_state = np.delete(temp, i-ctr, 0)
+				self.board_state = np.delete(self.board_state, i-ctr, 0)
 				ctr += 1
 
 		#add the lines back on top

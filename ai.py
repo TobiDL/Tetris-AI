@@ -56,6 +56,7 @@ def test():
 	square = PieceSet(1)
 
 	move = board.best_move(square)
+
 	return str(move)
 
 
@@ -78,10 +79,14 @@ def calculate_best_move():
 
 	piece = PieceSet(piece_num)
 
-	moves = board.best_move(piece)
-	print(moves)
+	best_board = board.best_move(piece)
+	
+	moves = best_board.moves
+	rotations = best_board.latest_piece.rotation
 
-	return ''+str(moves)
+	res = {'moves': moves, 'rotations':rotations}
+
+	return jsonify(res)
 
 
 if __name__ == '__main__':

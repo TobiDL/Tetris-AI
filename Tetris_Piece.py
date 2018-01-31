@@ -23,13 +23,13 @@ class PieceSet:
 
     def straight_piece(self):
         s1 = Piece(
-            [[1, 1, 1, 1]], 4, 1)
+            [[1, 1, 1, 1]], 4, 1, 1)
 
         s2 = Piece(
             [[1],
              [1],
              [1],
-             [1]], 1, 4)
+             [1]], 1, 4, 0)
 
 
         return [s1, s2]
@@ -38,20 +38,20 @@ class PieceSet:
         l1 = Piece(
             [[1, 0],
              [1, 0],
-             [1, 1]], 2, 3)
+             [1, 1]], 2, 3, 0)
 
         l2 = Piece(
             [[0, 0, 1],
-             [1, 1, 1]], 3, 2)
+             [1, 1, 1]], 3, 2, 3)
 
         l3 = Piece(
             [[1, 1],
              [0, 1],
-             [0, 1]], 2, 3)
+             [0, 1]], 2, 3, 2)
 
         l4 = Piece(
             [[1, 1, 1],
-             [1, 0, 0]], 3, 2)
+             [1, 0, 0]], 3, 2, 1)
 
         return [l1,l2, l3, l4]
 
@@ -59,20 +59,20 @@ class PieceSet:
         rl1 = Piece(
             [[0, 1],
              [0, 1],
-             [1, 1]], 2, 3)
+             [1, 1]], 2, 3, 0)
 
         rl2 = Piece(
             [[1, 0, 0],
-             [1, 1, 1]], 3, 2)
+             [1, 1, 1]], 3, 2, 1)
 
         rl3 = Piece(
             [[1, 1],
              [1, 0],
-             [1, 0]], 2, 3)
+             [1, 0]], 2, 3, 2)
 
         rl4 = Piece(
             [[1, 1, 1],
-             [0, 0, 1]], 3, 2)
+             [0, 0, 1]], 3, 2, 3)
 
         return [rl1, rl2, rl3, rl4]
 
@@ -80,19 +80,19 @@ class PieceSet:
 
         s = Piece(
             [[1, 1],
-    	     [1, 1]], 2, 2)
+    	     [1, 1]], 2, 2, 0)
 
         return [s]
 
     def squigly_piece(self):
         s1 = Piece(
             [[0, 1, 1],
-             [1, 1, 0]], 3, 2)
+             [1, 1, 0]], 3, 2, 0)
 
         s2 = Piece(
             [[1, 0],
              [1, 1],
-             [0, 1]], 2, 3)
+             [0, 1]], 2, 3, 1)
 
 
         return [s1, s2]
@@ -100,12 +100,12 @@ class PieceSet:
     def rev_squigly_piece(self):
         rs1 = Piece(
             [[1, 1, 0],
-             [0, 1, 1]], 3, 2)
+             [0, 1, 1]], 3, 2, 0)
 
         rs2 = Piece(
             [[0, 1],
              [1, 1],
-             [1, 0]], 2, 3)
+             [1, 0]], 2, 3, 1)
 
 
         return [rs1, rs2]
@@ -113,30 +113,31 @@ class PieceSet:
     def T_piece(self):
         t1 = Piece(
             [[1, 1, 1],
-             [0, 1, 0]] , 3, 2)
+             [0, 1, 0]] , 3, 2, 0)
  
         t2 = Piece(
             [[0, 1, 0],
-             [1, 1, 1]] , 3, 2)    
+             [1, 1, 1]] , 3, 2, 2)    
 
 
         t3 = Piece(
             [[0, 1],
              [1, 1],
-             [0, 1]] , 2, 3)
+             [0, 1]] , 2, 3, 1)
 
         t4 = Piece(
             [[1, 0],
              [1, 1],
-             [1, 0]] , 2, 3)
+             [1, 0]] , 2, 3, 3)
 
         return [t1,t2,t3,t4]
 
 class Piece:
 
-    def __init__(self, matrix = [], w = 0, h = 0):
+    def __init__(self, matrix = [], w = 0, h = 0, r = 0):
 
         self.matrix = matrix
         self.width = w
         self.height = h
+        self.rotation = r
 
