@@ -61,34 +61,15 @@ class Board:
 
 		if m < 19:
 			for i in range(piece.width):
-				diff.append(board[m, x+i] * piece.matrix[piece.height-1][i])
-				print((board[m, x+i], piece.matrix[piece.height-1][i]))
-				print(m, x+i)
+				diff.append(board[m+1, x+i] * piece.matrix[piece.height-1][i])
 			if sum(diff) == 0:
-
-				print("wow")
+				m += 1
 
 
 		for i in range(piece.width):
 			for k in range(piece.height):
 				board[m-k, x+i] = piece.matrix[piece.height-1-k][i]
 
-		if sum(diff) == 0:
-			print(board)
-
-		'''
-		offset = 0
-		while not self.valid_board(board, piece, m + offset, x):
-			offset += 1
-			child = Board(copy.deepcopy(self.board_state))
-			board = child.board_state
-
-			for i in range(piece.width):
-				for k in range(piece.height):
-					board[m - k + offset, x + i] += 2 * piece.matrix[piece.height - 1 - k][i]
-
-		board = self.remove_2(board, piece, m + offset, x)
-		'''
 
 		clears = child.update()
 		child.value += clears*100
@@ -97,31 +78,14 @@ class Board:
 
 		child.moves = x
 		return child
-
-
-	def valid_board(self, board, piece, y, x):
-		for i in range(piece.width):
-			for k in range(piece.height):
-				if board[y - k, x + i] == 2 and board[y - k + 1, x + i] == 1:
-					return True
-		return False
-
-	def remove_2(self, board, piece, y, x):
-		count = 0
-		for i in range(piece.width):
-			for k in range(piece.height):
-				if board[y - k, x + i] == 2:
-					board[y - k, x + i] = 1
-					count += 1
-					if count == 4:
-						return board
-
+ 
 	def get_highest_pos(self):
 		h = [0,0,0,0,0,0,0,0,0,0]
 		for (x,y), value in np.ndenumerate(self.board_state):
 			if value == 1 and h[y] == 0:
 				h[y] = 20-x
 		return h
+
 
 	def get_avg_height(self):
 		return sum(self.highest_pos) / len(self.highest_pos)
