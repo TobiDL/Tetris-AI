@@ -164,7 +164,7 @@ window.addEventListener("load", function (ev) {
     //window.addEventListener("keydown", keyHandler, false);
     render();
 
-    setInterval(timer, 100);
+    setInterval(timer, 1000);
 
     timer();
 }, false);

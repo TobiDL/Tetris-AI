@@ -11,6 +11,7 @@ class Board:
 
 		self.moves = 0
 		self.latest_piece = None
+		self.value = 0
 
 		if len(state) == 0:
 			self.board_state = np.zeros(shape=(20, 10))
@@ -26,7 +27,7 @@ class Board:
 		score = []
 
 		for board in possible_moves:
-			score.append(board.heuristic())
+			score.append(board.value)
 
 		print(possible_moves[score.index(max(score))].board_state)
 
@@ -56,13 +57,24 @@ class Board:
 
 		#first we get the max height
 		m = 19 - max(self.highest_pos[x:x+piece.width])
+		diff = []
 
-		if False: #better check goes here
-			pass
-		else:
+		if m < 19:
 			for i in range(piece.width):
-				for k in range(piece.height):
-					board[m-k, x+i] = piece.matrix[piece.height-1-k][i]
+				diff.append(board[m, x+i] * piece.matrix[piece.height-1][i])
+				print((board[m, x+i], piece.matrix[piece.height-1][i]))
+				print(m, x+i)
+			if sum(diff) == 0:
+
+				print("wow")
+
+
+		for i in range(piece.width):
+			for k in range(piece.height):
+				board[m-k, x+i] = piece.matrix[piece.height-1-k][i]
+
+		if sum(diff) == 0:
+			print(board)
 
 		'''
 		offset = 0
@@ -78,7 +90,11 @@ class Board:
 		board = self.remove_2(board, piece, m + offset, x)
 		'''
 
-		child.update()
+		clears = child.update()
+		child.value += clears*100
+
+		child.value = child.heuristic()
+
 		child.moves = x
 		return child
 
@@ -120,24 +136,28 @@ class Board:
 		return holes
 
 	def heuristic(self):
-		return (-2 * self.get_nb_holes()) + (-1 * self.get_avg_height())
+		return (-2 * self.get_nb_holes()) + (-1 * self.get_avg_height() + (-2 * max((self.highest_pos))))
 
 
 	def update(self):
 		
 		ctr = 0
+		clear = 0
 
 		#remove each row that has no 0's
 		for i, row in enumerate(self.board_state):
 			if 0 not in row:
 				self.board_state = np.delete(self.board_state, i-ctr, 0)
 				ctr += 1
+				clear+= 1
 
 		#add the lines back on top
 		if ctr > 0:
 			self.board_state = np.concatenate(([[0,0,0,0,0,0,0,0,0,0]]*ctr, self.board_state), axis = 0)
 
 		self.highest_pos = self.get_highest_pos()
+
+		return clear
 
 
 	def print_board(self):
