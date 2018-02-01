@@ -29,6 +29,7 @@ class Board:
 		for board in possible_moves:
 			score.append(board.value)
 
+		print("Score:",max(score))
 		print(possible_moves[score.index(max(score))].board_state)
 
 
@@ -59,16 +60,24 @@ class Board:
 		m = 19 - max(self.highest_pos[x:x+piece.width])
 		diff = []
 
+		#checks if piece can go below
 		if m < 19:
 			for i in range(piece.width):
 				diff.append(board[m+1, x+i] * piece.matrix[piece.height-1][i])
 			if sum(diff) == 0:
 				m += 1
 
+				#check again
+				if m < 19:
+					for i in range(piece.width):
+						diff.append(board[m+1, x+i] * piece.matrix[piece.height-2][i])
+					if sum(diff) == 0:
+						m += 1
 
 		for i in range(piece.width):
 			for k in range(piece.height):
-				board[m-k, x+i] = piece.matrix[piece.height-1-k][i]
+				if piece.matrix[piece.height-1-k][i] == 1:
+					board[m-k, x+i] = piece.matrix[piece.height-1-k][i]
 
 
 		clears = child.update()
@@ -90,17 +99,33 @@ class Board:
 	def get_avg_height(self):
 		return sum(self.highest_pos) / len(self.highest_pos)
 
+	
 	def get_nb_holes(self):
 		holes = 0
 
 		for (x,y), value in np.ndenumerate(self.board_state):
+
+			#checks if empty square is covered by above block
+			if x > 0 and self.board_state.item((x,y)) == 0 and self.board_state.item((x-1,y)) == 1:
+				holes += 1
+
+			#cheks if surrounded
 			if 1 <= y <= 8 and x > 0:
 				if self.board_state.item((x,y-1)) == 1 and self.board_state.item((x,y+1)) == 1 and self.board_state.item((x-1,y)) == 1 and value == 0:
-					holes += 1
+					holes += 5
+
 		return holes
 
 	def heuristic(self):
-		return (-2 * self.get_nb_holes()) + (-1 * self.get_avg_height() + (-2 * max((self.highest_pos))))
+		holes_weight = -3
+		avg_height_weight = -1
+		max_height_weight = -1
+
+		holes = self.get_nb_holes()
+		avg_height = self.get_avg_height()
+		max_height = max(self.highest_pos)
+
+		return holes_weight * holes + avg_height_weight * avg_height + max_height_weight * max_height
 
 
 	def update(self):
