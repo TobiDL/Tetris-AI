@@ -81,9 +81,9 @@ class Board:
 
 
 		clears = child.update()
-		child.value += clears*100
 
 		child.value = child.heuristic()
+		child.value += clears*100
 
 		child.moves = x
 		return child
@@ -131,14 +131,12 @@ class Board:
 	def update(self):
 		
 		ctr = 0
-		clear = 0
 
 		#remove each row that has no 0's
 		for i, row in enumerate(self.board_state):
 			if 0 not in row:
 				self.board_state = np.delete(self.board_state, i-ctr, 0)
 				ctr += 1
-				clear+= 1
 
 		#add the lines back on top
 		if ctr > 0:
@@ -146,7 +144,7 @@ class Board:
 
 		self.highest_pos = self.get_highest_pos()
 
-		return clear
+		return ctr
 
 
 	def print_board(self):
