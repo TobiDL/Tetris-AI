@@ -1,6 +1,6 @@
 # Tetris-AI
 
-Tetris AI implemented using Flask and Javascript.
+Tetris AI implemented using Python's Flask library and Javascript.
 
 ## How to run:
 
